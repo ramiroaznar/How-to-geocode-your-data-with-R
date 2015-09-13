@@ -6,7 +6,13 @@ fires <- read.csv("fires.csv", header = TRUE, sep = ",", stringsAsFactors=FALSE)
 library(ggplot2)
 library(ggmap)
 lonlat <- geocode(fires$town_name) #Generate lon/lat values for each town
-fires_lonlat <- merge(fires, lonlat) #Join lonlat with fires dataset
+
+#Merging both datasets
+lonlat$id <- seq.int(nrow(lonlat))
+write.csv(lonlat, "lonlat.csv")
+fires$id <- seq.int(nrow(fires))
+write.csv(fires, "fires.csv")
+fires_lonlat <- merge(fires, lonlat, by.x = "id") #Join lonlat with fires dataset
 write.csv(fires_lonlat, "fires_lonlat.csv")
 
 #Looking for outliers
